@@ -32,11 +32,11 @@ public class ArvoreBMais {
             NoFolha tabDados = new NoFolha();
             tabDados.salva(arqDados);
 
-        }finally{
-            if (arqIndice != null){
+        } finally {
+            if (arqIndice != null) {
                 arqIndice.close();
             }
-            if (arqDados != null){
+            if (arqDados != null) {
                 arqDados.close();
             }
         }
@@ -53,7 +53,7 @@ public class ArvoreBMais {
     encontrou = true
     pontFolha aponta para a página folha que contém a chave
     pos aponta para a posição em que a chave se encontra dentro da página
-
+    
     Caso a chave codCli não seja encontrada:
     encontrou = false
     pontFolha aponta para a última página folha examinada
@@ -63,25 +63,37 @@ public class ArvoreBMais {
         //TODO: Inserir aqui o código do algoritmo
         RandomAccessFile arqIndice = null;
         RandomAccessFile arqDados = null;
+            boolean encontrou = false;
+        int pontFolha=0, pos=0;
         try {
             arqIndice = new RandomAccessFile(new File(nomeArquivoIndice), "r");
             arqDados = new RandomAccessFile(new File(nomeArquivoDados), "r");
-            Metadados tabMetadados = null;
-            Metadados m = tabMetadados.le(arqIndice);
-            NoFolha tabDados = null;
-            NoFolha f = tabDados.le(arqDados);
+            Metadados m = Metadados.le(arqIndice);
+            NoFolha f = NoFolha.le(arqDados);
+                if (m.raizFolha) {
+                    for(int i=f.m;(i>=0)&&(!encontrou);i--){
+                        if(codCli == f.clientes.hashCode()){
+                            
+                        }
+                    }
+            }
             f.equals(codCli);
             int i = f.m;
-            
-        }finally{
-            if (arqIndice != null){
+
+        } finally {
+            if (arqIndice != null) {
                 arqIndice.close();
             }
-            if (arqDados != null){
+            if (arqDados != null) {
                 arqDados.close();
             }
         }
-        ResultBusca result = new ResultBusca(Integer.MAX_VALUE, Integer.MAX_VALUE, false);
+        ResultBusca result ;
+        if(encontrou){
+            result = new ResultBusca(pontFolha, pos, true);
+        }else{
+            result = new ResultBusca(Integer.MAX_VALUE, Integer.MAX_VALUE, false);
+        }
         return result;
     }
 
